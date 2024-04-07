@@ -1,12 +1,18 @@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TankClient extends Frame {
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
     int x = 50, y = 50;
-    Tank myTank = new Tank(50, 50,this);
-    Missile m=null;
+    Tank myTank = new Tank(50, 50, this);
+    List<Missile> missileList = new ArrayList<Missile>();
+    Missile m = null;
 
     Image offScreenImage = null;
 
@@ -29,8 +35,11 @@ public class TankClient extends Frame {
     }
 
     public void paint(Graphics g) {
+        g.drawString("Missiles count:"+missileList.size(),10,50);
+        for (Missile m : missileList) {
+            m.draw(g);
+        }
         myTank.draw(g);
-        if(m!=null) m.draw(g);
     }
 
     public void lunchFrame() {

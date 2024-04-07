@@ -84,6 +84,7 @@ public class Tank {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
+            case KeyEvent.VK_SPACE -> fire();
             case KeyEvent.VK_LEFT -> bL = false;
             case KeyEvent.VK_UP -> bU = false;
             case KeyEvent.VK_RIGHT -> bR = false;
@@ -107,7 +108,9 @@ public class Tank {
     public Missile fire() {
         int x = this.x + Tank.WIDTH / 2 - Missile.WIDTH / 2;
         int y = this.y + Tank.HEIGHT / 2 - Missile.WIDTH / 2;
-        return new Missile(x, y, ptDir);
+        Missile m = new Missile(x, y, ptDir);
+        tankClient.missileList.add(m);
+        return m;
     }
 
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
