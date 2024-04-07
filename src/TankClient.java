@@ -1,10 +1,14 @@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class TankClient extends Frame {
-    public static final int GAME_WIDTH=800;
-    public static final int GAME_HEIGHT=600;
+    public static final int GAME_WIDTH = 800;
+    public static final int GAME_HEIGHT = 600;
     int x = 50, y = 50;
+    Tank myTank = new Tank(50, 50);
 
     Image offScreenImage = null;
 
@@ -13,28 +17,21 @@ public class TankClient extends Frame {
         tankClient.lunchFrame();
     }
 
-    public void update(Graphics g){
-        if(offScreenImage==null){
-            offScreenImage = this.createImage(GAME_WIDTH,GAME_HEIGHT);
+    public void update(Graphics g) {
+        if (offScreenImage == null) {
+            offScreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
         }
         Graphics getOffScreen = offScreenImage.getGraphics();
-        Color color=getOffScreen.getColor();
+        Color color = getOffScreen.getColor();
         getOffScreen.setColor(Color.BLACK);
-        getOffScreen.fillRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+        getOffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         getOffScreen.setColor(color);
         print(getOffScreen);
-        g.drawImage(offScreenImage,0,0,null);
+        g.drawImage(offScreenImage, 0, 0, null);
     }
+
     public void paint(Graphics g) {
-        Color color = g.getColor();
-        g.setColor(new Color(255, 100, 50, 255));
-        g.fillRect(x, y, 30, 30);
-        g.setColor(new Color(10, 100, 50, 255));
-        g.fillRect(x, y + 5, 5, 10);
-        g.fillRect(x + 25, y + 5, 5, 10);
-        g.setColor(Color.WHITE);
-        g.fillRect(x + 12, y - 2, 5, 20);
-        g.setColor(color);
+        myTank.draw(g);
     }
 
     public void lunchFrame() {
@@ -83,16 +80,11 @@ public class TankClient extends Frame {
             }
         }
     }
-    private class KeyMonitor extends KeyAdapter{
+
+    private class KeyMonitor extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
-            int key=e.getKeyCode();
-            switch (key){
-                case KeyEvent.VK_LEFT -> x-=5;
-                case KeyEvent.VK_UP -> y-=5;
-                case KeyEvent.VK_RIGHT -> x+=5;
-                case KeyEvent.VK_DOWN -> y+=5;
-            }
+            myTank.keyPressed(e);
         }
     }
 }
