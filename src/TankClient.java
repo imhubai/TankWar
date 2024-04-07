@@ -2,9 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class TankClient extends JFrame {
+public class TankClient extends Frame {
+    public static final int GAME_WIDTH=800;
+    public static final int GAME_HEIGHT=600;
     int x = 50, y = 50;
-    int Window_width=800,Window_height=600;
+
     Image offScreenImage = null;
 
     public static void main(String[] args) {
@@ -14,12 +16,12 @@ public class TankClient extends JFrame {
 
     public void update(Graphics g){
         if(offScreenImage==null){
-            offScreenImage = this.createImage(Window_width,Window_height);
+            offScreenImage = this.createImage(GAME_WIDTH,GAME_HEIGHT);
         }
         Graphics getOffScreen = offScreenImage.getGraphics();
         Color color=getOffScreen.getColor();
         getOffScreen.setColor(Color.BLACK);
-        getOffScreen.fillRect(0,0,Window_width,Window_height);
+        getOffScreen.fillRect(0,0,GAME_WIDTH,GAME_HEIGHT);
         getOffScreen.setColor(color);
         print(getOffScreen);
         g.drawImage(offScreenImage,0,0,null);
@@ -31,7 +33,7 @@ public class TankClient extends JFrame {
         g.setColor(new Color(10, 100, 50, 255));
         g.fillRect(x, y + 5, 5, 10);
         g.fillRect(x + 25, y + 5, 5, 10);
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.fillRect(x + 12, y - 2, 5, 20);
         g.setColor(color);
         x += 5;
@@ -40,7 +42,7 @@ public class TankClient extends JFrame {
 
     public void lunchFrame() {
         this.setLocation(0, 100);
-        this.setSize(Window_width, Window_height);
+        this.setSize(GAME_WIDTH, GAME_HEIGHT);
         setTitle("TankWar");
         addWindowListener(new WindowAdapter() {
             @Override
@@ -63,7 +65,8 @@ public class TankClient extends JFrame {
                 setTitle("TankWar - Pause");
             }
         });
-        setResizable(false);
+        this.setBackground(Color.BLACK);
+        this.setResizable(false);
         setVisible(true);
 
         new Thread(new PaintThread()).start();
