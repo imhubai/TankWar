@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 public class TankClient extends JFrame {
     int x = 50, y = 50;
@@ -47,7 +46,7 @@ public class TankClient extends JFrame {
 
             @Override
             public void windowDeactivated(WindowEvent e) {
-                super.windowDeactivated(e);
+                setTitle("TankWar - Pause");
             }
         });
         setResizable(false);
