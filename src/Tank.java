@@ -2,7 +2,11 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class Tank {
-    int x, y;
+    public static final int XSPEED = 5;
+    public static final int YSPEED = 5;
+    private int x, y;
+    private boolean bL = false, bU = false, bR = false, bD = false;
+    private Direction dir = Direction.STOP;
 
     public Tank(int x, int y) {
         this.x = x;
@@ -19,15 +23,59 @@ public class Tank {
         g.setColor(Color.WHITE);
         g.fillRect(x + 12, y - 2, 5, 20);
         g.setColor(color);
+
+        move();
+    }
+
+    void move() {
+        switch (dir) {
+            case L -> x -= XSPEED;
+            case LU -> {
+                x -= XSPEED;
+                y -= YSPEED;
+            }
+            case U -> y -= YSPEED;
+            case RU -> {
+                x += XSPEED;
+                y -= YSPEED;
+            }
+            case R -> x += XSPEED;
+            case RD -> {
+                x += XSPEED;
+                y += YSPEED;
+            }
+            case D -> y += YSPEED;
+            case LD -> {
+                x -= XSPEED;
+                y += YSPEED;
+            }
+            case STOP -> {
+            }
+        }
     }
 
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
-            case KeyEvent.VK_LEFT -> x -= 5;
-            case KeyEvent.VK_UP -> y -= 5;
-            case KeyEvent.VK_RIGHT -> x += 5;
-            case KeyEvent.VK_DOWN -> y += 5;
+            case KeyEvent.VK_LEFT -> bL = true;
+            case KeyEvent.VK_UP -> bU = true;
+            case KeyEvent.VK_RIGHT -> bR = true;
+            case KeyEvent.VK_DOWN -> bD = true;
         }
+        locateDirection();
     }
+
+    void locateDirection() {
+        if (bL && !bU && !bR && !bD) dir = Direction.L;
+        else if (bL && bU && !bR && !bD) dir = Direction.LU;
+        else if (!bL && bU && !bR && !bD) dir = Direction.U;
+        else if (!bL && bU && bR && !bD) dir = Direction.RU;
+        else if (!bL && !bU && bR && !bD) dir = Direction.R;
+        else if (!bL && !bU && bR && bD) dir = Direction.RD;
+        else if (!bL && !bU && !bR && bD) dir = Direction.D;
+        else if (bL && !bU && !bR && bD) dir = Direction.LD;
+        else if (!bL && !bU && !bR && !bD) dir = Direction.STOP;
+    }
+
+    enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
 }
