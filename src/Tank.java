@@ -13,6 +13,16 @@ public class Tank {
     private Direction ptDir = Direction.D;
     private boolean good=true;
 
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
+    }
+
+    private boolean live=true;
+
     public Tank(int x, int y, TankClient tankClient) {
         this.x = x;
         this.y = y;
@@ -26,6 +36,9 @@ public class Tank {
     }
 
     public void draw(Graphics g) {
+        if(!live){
+            return;
+        }
         Color color = g.getColor();
         if(good) g.setColor(Color.GREEN);
         else g.setColor(new Color(255, 100, 50, 255));
@@ -122,6 +135,10 @@ public class Tank {
         Missile m = new Missile(ptDir, tankClient, x, y);
         tankClient.missileList.add(m);
         return m;
+    }
+
+    public Rectangle getRect() {
+        return new Rectangle(x, y, WIDTH, HEIGHT);
     }
 
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}

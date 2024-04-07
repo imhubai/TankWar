@@ -3,16 +3,12 @@ import java.awt.*;
 public class Missile {
     public static final int XSPEED = 10;
     public static final int YSPEED = 10;
-    public static final int WIDTH=10;
-    public static final int HEIGHT=10;
+    public static final int WIDTH = 10;
+    public static final int HEIGHT = 10;
     Tank.Direction dir;
     TankClient tankClient;
     private int x, y;
-    private boolean live =true;
-
-    public boolean isLive() {
-        return live;
-    }
+    private boolean live = true;
 
     public Missile(Tank.Direction dir, TankClient tankClient, int x, int y) {
         this.dir = dir;
@@ -21,16 +17,19 @@ public class Missile {
         this.y = y;
     }
 
-    public void setLive(boolean live) {
-        this.live = live;
-    }
-
     public Missile(int x, int y, Tank.Direction dir) {
         this.x = x;
         this.y = y;
         this.dir = dir;
     }
 
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
+    }
 
     private void move() {
         switch (dir) {
@@ -55,17 +54,34 @@ public class Missile {
                 y += YSPEED;
             }
         }
-        if(x<0 || y<0 || y>TankClient.GAME_HEIGHT || x>TankClient.GAME_WIDTH){
-            live=false;
+        if (x < 0 || y < 0 || y > TankClient.GAME_HEIGHT || x > TankClient.GAME_WIDTH) {
+            live = false;
             tankClient.missileList.remove(this);
         }
     }
 
     public void draw(Graphics g) {
+        if (!live) {
+            tankClient.missileList.remove(this);
+            return;
+        }
         Color c = g.getColor();
         g.setColor(Color.WHITE);
         g.fillOval(x, y, WIDTH, HEIGHT);
         g.setColor(c);
         move();
+    }
+
+    public Rectangle getRect() {
+        return new Rectangle(x, y, WIDTH, HEIGHT);
+    }
+
+    public boolean hitTank(Tank t) {
+        if (this.getRect().intersects(t.getRect()) && t.isLive()) {
+            t.setLive(false);
+            this.live = false;
+            return true;
+        }
+        return false;
     }
 }
