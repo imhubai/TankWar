@@ -1,23 +1,34 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class TankClient extends JFrame {
-    public void paint(Graphics g){
-        Color color = g.getColor();
-        g.setColor(new Color(255,100,50,255));
-        g.fillRect(50,50,30,30);
-        g.setColor(new Color(10,100,50,255));
-        g.fillRect(50,55,5,10);
-        g.fillRect(75,55,5,10);
-        g.setColor(Color.BLACK);
-        g.fillRect(62,48,5,20);
-        g.setColor(color);
+    int x = 50, y = 50;
+
+    public static void main(String[] args) {
+        TankClient tankClient = new TankClient();
+        tankClient.lunchFrame();
     }
-    public void lunchFrame(){
-        this.setLocation(0,100);
-        this.setSize(800,600);
-        setTitle("TankWar 0210");
+
+    public void paint(Graphics g) {
+        Color color = g.getColor();
+        g.setColor(new Color(255, 100, 50, 255));
+        g.fillRect(x, y, 30, 30);
+        g.setColor(new Color(10, 100, 50, 255));
+        g.fillRect(x, y + 5, 5, 10);
+        g.fillRect(x + 25, y + 5, 5, 10);
+        g.setColor(Color.BLACK);
+        g.fillRect(x + 12, y - 2, 5, 20);
+        g.setColor(color);
+        x += 5;
+        y += 5;
+    }
+
+    public void lunchFrame() {
+        this.setLocation(0, 100);
+        this.setSize(800, 600);
+        setTitle("TankWar");
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -41,9 +52,21 @@ public class TankClient extends JFrame {
         });
         setResizable(false);
         setVisible(true);
+
+        new Thread(new PaintThread()).start();
     }
-    public static void main(String[] args) {
-        TankClient tankClient = new TankClient();
-        tankClient.lunchFrame();
+
+    private class PaintThread implements Runnable {
+        @Override
+        public void run() {
+            while (true) {
+                repaint();
+                try {
+                    Thread.sleep(100);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
