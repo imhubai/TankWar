@@ -1,5 +1,8 @@
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +13,7 @@ public class TankClient extends Frame {
     Tank myTank = new Tank(50, 50, this);
     Tank enemyTank = new Tank(100, 100, false, this);
     List<Missile> missileList = new ArrayList<>();
+    List<Explode> explodeList = new ArrayList<>();
     Missile m = null;
 
     Image offScreenImage = null;
@@ -33,11 +37,16 @@ public class TankClient extends Frame {
     }
 
     public void paint(Graphics g) {
-        g.drawString("Missiles count:"+missileList.size(),10,50);
+        g.drawString("Missiles count:" + missileList.size(), 10, 50);
+        g.drawString("explodes count: " + explodeList.size(), 10, 70);
         for (int i = 0; i < missileList.size(); i++) {
             Missile m = missileList.get(i);
             m.hitTank(enemyTank);
             m.draw(g);
+        }
+        for (int i = 0; i < explodeList.size(); i++) {
+            Explode e = explodeList.get(i);
+            e.draw(g);
         }
         myTank.draw(g);
         enemyTank.draw(g);

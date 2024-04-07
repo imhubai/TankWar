@@ -7,7 +7,25 @@ public class Tank {
     public static final int WIDTH = 30;
     public static final int HEIGHT = 30;
     TankClient tankClient = null;
-    private int x, y;
+    private int x;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    private int y;
     private boolean bL = false, bU = false, bR = false, bD = false;
     private Direction dir = Direction.STOP;
     private Direction ptDir = Direction.D;
