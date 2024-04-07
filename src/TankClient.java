@@ -3,6 +3,17 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class TankClient extends JFrame {
+    public void paint(Graphics g){
+        Color color = g.getColor();
+        g.setColor(new Color(255,100,50,255));
+        g.fillRect(50,50,30,30);
+        g.setColor(new Color(10,100,50,255));
+        g.fillRect(50,55,5,10);
+        g.fillRect(75,55,5,10);
+        g.setColor(Color.BLACK);
+        g.fillRect(62,48,5,20);
+        g.setColor(color);
+    }
     public void lunchFrame(){
         this.setLocation(0,100);
         this.setSize(800,600);
