@@ -10,6 +10,7 @@ public class Tank {
     private int x, y;
     private boolean bL = false, bU = false, bR = false, bD = false;
     private Direction dir = Direction.STOP;
+    private Direction ptDir = Direction.D;
 
     public Tank(int x, int y, TankClient tankClient) {
         this.x = x;
@@ -21,13 +22,20 @@ public class Tank {
         Color color = g.getColor();
         g.setColor(new Color(255, 100, 50, 255));
         g.fillRect(x, y, 30, 30);
-        g.setColor(new Color(10, 100, 50, 255));
-        g.fillRect(x, y + 5, 5, 10);
-        g.fillRect(x + 25, y + 5, 5, 10);
-        g.setColor(Color.WHITE);
-        g.fillRect(x + 12, y - 2, 5, 20);
         g.setColor(color);
 
+        switch (ptDir) {
+            case L -> g.drawLine(x + Tank.WIDTH / 2, y + Tank.HEIGHT / 2, x, y + Tank.HEIGHT / 2);
+            case LU -> g.drawLine(x + Tank.WIDTH / 2, y + Tank.HEIGHT / 2, x, y);
+            case U -> g.drawLine(x + Tank.WIDTH / 2, y + Tank.HEIGHT / 2, x + Tank.WIDTH / 2, y);
+            case RU -> g.drawLine(x + Tank.WIDTH / 2, y + Tank.HEIGHT / 2, x + Tank.WIDTH, y);
+            case R -> g.drawLine(x + Tank.WIDTH / 2, y + Tank.HEIGHT / 2, x + Tank.WIDTH, y + Tank.HEIGHT / 2);
+            case RD -> g.drawLine(x + Tank.WIDTH / 2, y + Tank.HEIGHT / 2, x + Tank.WIDTH, y + Tank.HEIGHT);
+            case D -> g.drawLine(x + Tank.WIDTH / 2, y + Tank.HEIGHT / 2, x + Tank.WIDTH / 2, y + Tank.HEIGHT);
+            case LD -> g.drawLine(x + Tank.WIDTH / 2, y + Tank.HEIGHT / 2, x, y + Tank.HEIGHT);
+            case STOP -> {
+            }
+        }
         move();
     }
 
@@ -56,12 +64,15 @@ public class Tank {
             case STOP -> {
             }
         }
+        if (this.dir != Direction.STOP) {
+            this.ptDir = this.dir;
+        }
     }
 
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
-            case KeyEvent.VK_SPACE -> tankClient.m=fire();
+            case KeyEvent.VK_SPACE -> tankClient.m = fire();
             case KeyEvent.VK_LEFT -> bL = true;
             case KeyEvent.VK_UP -> bU = true;
             case KeyEvent.VK_RIGHT -> bR = true;
@@ -92,10 +103,12 @@ public class Tank {
         else if (bL && !bU && !bR && bD) dir = Direction.LD;
         else if (!bL && !bU && !bR && !bD) dir = Direction.STOP;
     }
-    public Missile fire(){
-        int x=this.x+Tank.WIDTH/2-Missile.WIDTH/2;
-        int y=this.y+Tank.HEIGHT/2-Missile.WIDTH/2;
-        return new Missile(x,y,dir);
+
+    public Missile fire() {
+        int x = this.x + Tank.WIDTH / 2 - Missile.WIDTH / 2;
+        int y = this.y + Tank.HEIGHT / 2 - Missile.WIDTH / 2;
+        return new Missile(x, y, ptDir);
     }
+
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
 }
