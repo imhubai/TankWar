@@ -4,13 +4,17 @@ import java.awt.event.KeyEvent;
 public class Tank {
     public static final int XSPEED = 5;
     public static final int YSPEED = 5;
+    public static final int WIDTH = 30;
+    public static final int HEIGHT = 30;
+    TankClient tankClient = null;
     private int x, y;
     private boolean bL = false, bU = false, bR = false, bD = false;
     private Direction dir = Direction.STOP;
 
-    public Tank(int x, int y) {
+    public Tank(int x, int y, TankClient tankClient) {
         this.x = x;
         this.y = y;
+        this.tankClient = tankClient;
     }
 
     public void draw(Graphics g) {
@@ -57,6 +61,7 @@ public class Tank {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
+            case KeyEvent.VK_SPACE -> tankClient.m=fire();
             case KeyEvent.VK_LEFT -> bL = true;
             case KeyEvent.VK_UP -> bU = true;
             case KeyEvent.VK_RIGHT -> bR = true;
@@ -87,6 +92,10 @@ public class Tank {
         else if (bL && !bU && !bR && bD) dir = Direction.LD;
         else if (!bL && !bU && !bR && !bD) dir = Direction.STOP;
     }
-
+    public Missile fire(){
+        int x=this.x+Tank.WIDTH/2-Missile.WIDTH/2;
+        int y=this.y+Tank.HEIGHT/2-Missile.WIDTH/2;
+        return new Missile(x,y,dir);
+    }
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
 }
