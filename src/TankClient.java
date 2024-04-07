@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -36,8 +35,6 @@ public class TankClient extends Frame {
         g.setColor(Color.WHITE);
         g.fillRect(x + 12, y - 2, 5, 20);
         g.setColor(color);
-        x += 5;
-        y += 5;
     }
 
     public void lunchFrame() {
@@ -67,6 +64,7 @@ public class TankClient extends Frame {
         });
         this.setBackground(Color.BLACK);
         this.setResizable(false);
+        this.addKeyListener(new KeyMonitor());
         setVisible(true);
 
         new Thread(new PaintThread()).start();
@@ -78,10 +76,22 @@ public class TankClient extends Frame {
             while (true) {
                 repaint();
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(50);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+    private class KeyMonitor extends KeyAdapter{
+        @Override
+        public void keyPressed(KeyEvent e) {
+            int key=e.getKeyCode();
+            switch (key){
+                case KeyEvent.VK_LEFT -> x-=5;
+                case KeyEvent.VK_UP -> y-=5;
+                case KeyEvent.VK_RIGHT -> x+=5;
+                case KeyEvent.VK_DOWN -> y+=5;
             }
         }
     }
