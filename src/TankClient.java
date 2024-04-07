@@ -1,8 +1,5 @@
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +8,7 @@ public class TankClient extends Frame {
     public static final int GAME_HEIGHT = 600;
     int x = 50, y = 50;
     Tank myTank = new Tank(50, 50, this);
-    List<Missile> missileList = new ArrayList<Missile>();
+    List<Missile> missileList = new ArrayList<>();
     Missile m = null;
 
     Image offScreenImage = null;
@@ -27,7 +24,7 @@ public class TankClient extends Frame {
         }
         Graphics getOffScreen = offScreenImage.getGraphics();
         Color color = getOffScreen.getColor();
-        getOffScreen.setColor(Color.BLACK);
+        getOffScreen.setColor(Color.GRAY);
         getOffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         getOffScreen.setColor(color);
         print(getOffScreen);
@@ -36,7 +33,8 @@ public class TankClient extends Frame {
 
     public void paint(Graphics g) {
         g.drawString("Missiles count:"+missileList.size(),10,50);
-        for (Missile m : missileList) {
+        for (int i = 0; i < missileList.size(); i++) {
+            Missile m = missileList.get(i);
             m.draw(g);
         }
         myTank.draw(g);
@@ -67,7 +65,7 @@ public class TankClient extends Frame {
                 setTitle("TankWar - Pause");
             }
         });
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.gray);
         this.setResizable(false);
         this.addKeyListener(new KeyMonitor());
         setVisible(true);

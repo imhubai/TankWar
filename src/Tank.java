@@ -67,12 +67,15 @@ public class Tank {
         if (this.dir != Direction.STOP) {
             this.ptDir = this.dir;
         }
+        if(x < 0) x = 0;
+        if(y < 25) y = 25;
+        if(x + Tank.WIDTH > TankClient.GAME_WIDTH) x = TankClient.GAME_WIDTH - Tank.WIDTH;
+        if(y + Tank.HEIGHT > TankClient.GAME_HEIGHT) y = TankClient.GAME_HEIGHT - Tank.HEIGHT;
     }
 
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
-            case KeyEvent.VK_SPACE -> tankClient.m = fire();
             case KeyEvent.VK_LEFT -> bL = true;
             case KeyEvent.VK_UP -> bU = true;
             case KeyEvent.VK_RIGHT -> bR = true;
@@ -108,7 +111,7 @@ public class Tank {
     public Missile fire() {
         int x = this.x + Tank.WIDTH / 2 - Missile.WIDTH / 2;
         int y = this.y + Tank.HEIGHT / 2 - Missile.WIDTH / 2;
-        Missile m = new Missile(x, y, ptDir);
+        Missile m = new Missile(ptDir, tankClient, x, y);
         tankClient.missileList.add(m);
         return m;
     }
