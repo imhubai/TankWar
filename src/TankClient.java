@@ -4,12 +4,26 @@ import java.awt.event.*;
 
 public class TankClient extends JFrame {
     int x = 50, y = 50;
+    int Window_width=800,Window_height=600;
+    Image offScreenImage = null;
 
     public static void main(String[] args) {
         TankClient tankClient = new TankClient();
         tankClient.lunchFrame();
     }
 
+    public void update(Graphics g){
+        if(offScreenImage==null){
+            offScreenImage = this.createImage(Window_width,Window_height);
+        }
+        Graphics getOffScreen = offScreenImage.getGraphics();
+        Color color=getOffScreen.getColor();
+        getOffScreen.setColor(Color.BLACK);
+        getOffScreen.fillRect(0,0,Window_width,Window_height);
+        getOffScreen.setColor(color);
+        print(getOffScreen);
+        g.drawImage(offScreenImage,0,0,null);
+    }
     public void paint(Graphics g) {
         Color color = g.getColor();
         g.setColor(new Color(255, 100, 50, 255));
@@ -26,7 +40,7 @@ public class TankClient extends JFrame {
 
     public void lunchFrame() {
         this.setLocation(0, 100);
-        this.setSize(800, 600);
+        this.setSize(Window_width, Window_height);
         setTitle("TankWar");
         addWindowListener(new WindowAdapter() {
             @Override
