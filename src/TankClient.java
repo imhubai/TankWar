@@ -8,6 +8,7 @@ public class TankClient extends Frame {
     public static final int GAME_HEIGHT = 600;
     int x = 50, y = 50;
     Tank myTank = new Tank(50, 50, this);
+    Tank enemyTank = new Tank(100, 100, false, this);
     List<Missile> missileList = new ArrayList<>();
     Missile m = null;
 
@@ -38,6 +39,7 @@ public class TankClient extends Frame {
             m.draw(g);
         }
         myTank.draw(g);
+        enemyTank.draw(g);
     }
 
     public void lunchFrame() {
