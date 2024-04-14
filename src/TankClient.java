@@ -11,9 +11,10 @@ public class TankClient extends Frame {
     public static final int GAME_HEIGHT = 600;
     int x = 50, y = 50;
     Tank myTank = new Tank(50, 50, this);
-    Tank enemyTank = new Tank(100, 100, false, this);
+    //Tank enemyTank = new Tank(100, 100, false, this);
     List<Missile> missileList = new ArrayList<>();
     List<Explode> explodeList = new ArrayList<>();
+    List<Tank> tanks = new ArrayList<Tank>();
     Missile m = null;
 
     Image offScreenImage = null;
@@ -37,19 +38,23 @@ public class TankClient extends Frame {
     }
 
     public void paint(Graphics g) {
+        g.drawString("tanks count: " + tanks.size(), 10, 90);
         g.drawString("Missiles count:" + missileList.size(), 10, 50);
         g.drawString("explodes count: " + explodeList.size(), 10, 70);
         for (int i = 0; i < missileList.size(); i++) {
             Missile m = missileList.get(i);
-            m.hitTank(enemyTank);
+            m.hitTanks(tanks);
             m.draw(g);
         }
         for (int i = 0; i < explodeList.size(); i++) {
             Explode e = explodeList.get(i);
             e.draw(g);
         }
+        for (int i = 0; i < tanks.size(); i++) {
+            Tank e = tanks.get(i);
+            e.draw(g);
+        }
         myTank.draw(g);
-        enemyTank.draw(g);
     }
 
     public void lunchFrame() {
@@ -83,6 +88,9 @@ public class TankClient extends Frame {
         setVisible(true);
 
         new Thread(new PaintThread()).start();
+        for(int i = 0; i < 10; i++) {
+            tanks.add(new Tank(50 + 40 * (i + 1), 50, false, this));
+        }
     }
 
     private class PaintThread implements Runnable {
