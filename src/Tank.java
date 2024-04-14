@@ -1,13 +1,36 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 public class Tank {
     public static final int XSPEED = 5;
     public static final int YSPEED = 5;
     public static final int WIDTH = 30;
     public static final int HEIGHT = 30;
+    private static Random r = new Random();
     TankClient tankClient = null;
+    private int step = r.nextInt(12) + 3;
     private int x;
+    private int y;
+    private boolean good;
+    private boolean bL = false, bU = false, bR = false, bD = false;
+    private Direction dir = Direction.STOP;
+    private Direction ptDir = Direction.D;
+    private boolean live = true;
+
+    public Tank(int x, int y, TankClient tankClient) {
+        this.x = x;
+        this.y = y;
+        this.tankClient = tankClient;
+    }
+
+    public Tank(int x, int y, boolean good, Direction dir, TankClient tankClient) {
+        this.x = x;
+        this.y = y;
+        this.tankClient = tankClient;
+        this.good = good;
+        this.dir = dir;
+    }
 
     public int getX() {
         return x;
@@ -25,11 +48,9 @@ public class Tank {
         this.y = y;
     }
 
-    private int y;
-    private boolean bL = false, bU = false, bR = false, bD = false;
-    private Direction dir = Direction.STOP;
-    private Direction ptDir = Direction.D;
-    private boolean good=true;
+    public boolean isGood() {
+        return good;
+    }
 
     public boolean isLive() {
         return live;
@@ -39,26 +60,12 @@ public class Tank {
         this.live = live;
     }
 
-    private boolean live=true;
-
-    public Tank(int x, int y, TankClient tankClient) {
-        this.x = x;
-        this.y = y;
-        this.tankClient = tankClient;
-    }
-    public Tank(int x, int y,boolean good, TankClient tankClient) {
-        this.x = x;
-        this.y = y;
-        this.tankClient = tankClient;
-        this.good=good;
-    }
-
     public void draw(Graphics g) {
-        if(!live){
+        if (!live) {
             return;
         }
         Color color = g.getColor();
-        if(good) g.setColor(Color.GREEN);
+        if (good) g.setColor(Color.GREEN);
         else g.setColor(new Color(255, 100, 50, 255));
         g.fillRect(x, y, 30, 30);
         g.setColor(color);
@@ -106,10 +113,22 @@ public class Tank {
         if (this.dir != Direction.STOP) {
             this.ptDir = this.dir;
         }
-        if(x < 0) x = 0;
-        if(y < 25) y = 25;
-        if(x + Tank.WIDTH > TankClient.GAME_WIDTH) x = TankClient.GAME_WIDTH - Tank.WIDTH;
-        if(y + Tank.HEIGHT > TankClient.GAME_HEIGHT) y = TankClient.GAME_HEIGHT - Tank.HEIGHT;
+        if (x < 0) x = 0;
+        if (y < 25) y = 25;
+        if (x + Tank.WIDTH > TankClient.GAME_WIDTH) x = TankClient.GAME_WIDTH - Tank.WIDTH;
+        if (y + Tank.HEIGHT > TankClient.GAME_HEIGHT) y = TankClient.GAME_HEIGHT - Tank.HEIGHT;
+
+        if (!good) {
+            Direction[] dirs = Direction.values();
+            if (step == 0) {
+                step = r.nextInt(12) + 3;
+                int rn = r.nextInt(dirs.length);
+                dir = dirs[rn];
+            }
+            step--;
+            if (r.nextInt(40) > 38) this.fire();
+        }
+
     }
 
     public void keyPressed(KeyEvent e) {
@@ -148,9 +167,10 @@ public class Tank {
     }
 
     public Missile fire() {
+        if (!live) return null;
         int x = this.x + Tank.WIDTH / 2 - Missile.WIDTH / 2;
         int y = this.y + Tank.HEIGHT / 2 - Missile.WIDTH / 2;
-        Missile m = new Missile(ptDir, tankClient, x, y);
+        Missile m = new Missile(x, y, good, ptDir, this.tankClient);
         tankClient.missileList.add(m);
         return m;
     }

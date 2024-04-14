@@ -10,7 +10,7 @@ public class TankClient extends Frame {
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
     int x = 50, y = 50;
-    Tank myTank = new Tank(50, 50, this);
+    Tank myTank = new Tank(50, 50, true, Tank.Direction.STOP, this);
     //Tank enemyTank = new Tank(100, 100, false, this);
     List<Missile> missileList = new ArrayList<>();
     List<Explode> explodeList = new ArrayList<>();
@@ -88,8 +88,8 @@ public class TankClient extends Frame {
         setVisible(true);
 
         new Thread(new PaintThread()).start();
-        for(int i = 0; i < 10; i++) {
-            tanks.add(new Tank(50 + 40 * (i + 1), 50, false, this));
+        for (int i = 0; i < 3; i++) {
+            tanks.add(new Tank(50 + 40 * (i + 1), 50, false, Tank.Direction.STOP, this));
         }
     }
 
@@ -99,7 +99,7 @@ public class TankClient extends Frame {
             while (true) {
                 repaint();
                 try {
-                    Thread.sleep(17);
+                    Thread.sleep(50);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
