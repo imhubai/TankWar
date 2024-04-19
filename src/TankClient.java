@@ -11,8 +11,7 @@ public class TankClient extends Frame {
     public static final int GAME_HEIGHT = 600;
     int x = 450, y = 350;
     Tank myTank = new Tank(x, y, true, Tank.Direction.STOP, this);
-    //Tank enemyTank = new Tank(100, 100, false, this);
-    Wall wall=new Wall(50,300,100,50,this);
+    Wall wall=new Wall(50,300,400,10,this);
     List<Missile> missileList = new ArrayList<>();
     List<Explode> explodeList = new ArrayList<>();
     List<Tank> tanks = new ArrayList<Tank>();
@@ -42,10 +41,11 @@ public class TankClient extends Frame {
         g.drawString("tanks count: " + tanks.size(), 10, 90);
         g.drawString("Missiles count:" + missileList.size(), 10, 50);
         g.drawString("explodes count: " + explodeList.size(), 10, 70);
+        g.drawString("HP: "+myTank.getLife(),10,80);
         for (int i = 0; i < missileList.size(); i++) {
             Missile m = missileList.get(i);
             m.hitTanks(tanks);
-            m.hitTank(myTank);
+            m.collidesWithTank(myTank);
             m.hitWall(wall);
             m.draw(g);
         }
