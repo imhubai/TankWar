@@ -192,7 +192,17 @@ public class Tank {
         }
         return false;
     }
-
+    public boolean collidesWithTanks(java.util.List<Tank> tanks) {
+        for(int i = 0; i < tanks.size(); i++) { Tank t = tanks.get(i);
+            if(this != t) {
+                if(this.live && t.isLive() &&
+                        this.getRect().intersects(t.getRect())) { t.stay();
+                    this.stay(); return true;
+                }
+            }
+        }
+        return false;
+    }
     private void stay() {
         x = oldX;
         y = oldY;
