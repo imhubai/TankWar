@@ -10,6 +10,8 @@ public class Tank {
     private static Random r = new Random();
     TankClient tankClient = null;
     private int step = r.nextInt(12) + 3;
+    private int oldX;
+    private int oldY;
     private int x;
     private int y;
     private boolean good;
@@ -27,6 +29,8 @@ public class Tank {
     public Tank(int x, int y, boolean good, Direction dir, TankClient tankClient) {
         this.x = x;
         this.y = y;
+        this.oldX=x;
+        this.oldY=y;
         this.tankClient = tankClient;
         this.good = good;
         this.dir = dir;
@@ -86,6 +90,8 @@ public class Tank {
     }
 
     void move() {
+        this.oldX = x;
+        this.oldY = y;
         switch (dir) {
             case L -> x -= XSPEED;
             case LU -> {
@@ -177,6 +183,19 @@ public class Tank {
 
     public Rectangle getRect() {
         return new Rectangle(x, y, WIDTH, HEIGHT);
+    }
+
+    public boolean collidesWithWall(Wall w) {
+        if (this.getRect().intersects(w.getRect()) && this.live) {
+            this.stay();
+            return true;
+        }
+        return false;
+    }
+
+    private void stay() {
+        x = oldX;
+        y = oldY;
     }
 
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}

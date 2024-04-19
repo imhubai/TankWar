@@ -9,9 +9,10 @@ import java.util.List;
 public class TankClient extends Frame {
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
-    int x = 50, y = 50;
-    Tank myTank = new Tank(50, 50, true, Tank.Direction.STOP, this);
+    int x = 450, y = 350;
+    Tank myTank = new Tank(x, y, true, Tank.Direction.STOP, this);
     //Tank enemyTank = new Tank(100, 100, false, this);
+    Wall wall=new Wall(50,300,100,50,this);
     List<Missile> missileList = new ArrayList<>();
     List<Explode> explodeList = new ArrayList<>();
     List<Tank> tanks = new ArrayList<Tank>();
@@ -44,6 +45,7 @@ public class TankClient extends Frame {
         for (int i = 0; i < missileList.size(); i++) {
             Missile m = missileList.get(i);
             m.hitTanks(tanks);
+            m.hitWall(wall);
             m.draw(g);
         }
         for (int i = 0; i < explodeList.size(); i++) {
@@ -52,9 +54,12 @@ public class TankClient extends Frame {
         }
         for (int i = 0; i < tanks.size(); i++) {
             Tank e = tanks.get(i);
+            e.collidesWithWall(wall);
             e.draw(g);
         }
         myTank.draw(g);
+        myTank.collidesWithWall(wall);
+        wall.draw(g);
     }
 
     public void lunchFrame() {
@@ -88,9 +93,9 @@ public class TankClient extends Frame {
         setVisible(true);
 
         new Thread(new PaintThread()).start();
-        tanks.add(myTank);
         for (int i = 0; i < 3; i++) {
-            tanks.add(new Tank(50 + 40 * (i + 1), 50, false, Tank.Direction.STOP, this));
+            Tank enemy =new Tank(50 + 40 * (i + 1), 50, false, Tank.Direction.STOP, this);
+            tanks.add(enemy);
         }
     }
 
@@ -100,7 +105,7 @@ public class TankClient extends Frame {
             while (true) {
                 repaint();
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(30);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
