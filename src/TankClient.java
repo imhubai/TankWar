@@ -45,6 +45,7 @@ public class TankClient extends Frame {
         for (int i = 0; i < missileList.size(); i++) {
             Missile m = missileList.get(i);
             m.hitTanks(tanks);
+            m.hitTank(myTank);
             m.hitWall(wall);
             m.draw(g);
         }
@@ -95,7 +96,7 @@ public class TankClient extends Frame {
         setVisible(true);
 
         new Thread(new PaintThread()).start();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 10; i++) {
             Tank enemy =new Tank(50 + 40 * (i + 1), 50, false, Tank.Direction.STOP, this);
             tanks.add(enemy);
         }

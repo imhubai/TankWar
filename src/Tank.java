@@ -29,8 +29,8 @@ public class Tank {
     public Tank(int x, int y, boolean good, Direction dir, TankClient tankClient) {
         this.x = x;
         this.y = y;
-        this.oldX=x;
-        this.oldY=y;
+        this.oldX = x;
+        this.oldY = y;
         this.tankClient = tankClient;
         this.good = good;
         this.dir = dir;
@@ -151,6 +151,7 @@ public class Tank {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
+            case KeyEvent.VK_Z -> superFire();
             case KeyEvent.VK_SPACE -> fire();
             case KeyEvent.VK_LEFT -> bL = false;
             case KeyEvent.VK_UP -> bU = false;
@@ -192,17 +193,38 @@ public class Tank {
         }
         return false;
     }
+
     public boolean collidesWithTanks(java.util.List<Tank> tanks) {
-        for(int i = 0; i < tanks.size(); i++) { Tank t = tanks.get(i);
-            if(this != t) {
-                if(this.live && t.isLive() &&
-                        this.getRect().intersects(t.getRect())) { t.stay();
-                    this.stay(); return true;
+        for (int i = 0; i < tanks.size(); i++) {
+            Tank t = tanks.get(i);
+            if (this != t) {
+                if (this.live && t.isLive() &&
+                        this.getRect().intersects(t.getRect())) {
+                    t.stay();
+                    this.stay();
+                    return true;
                 }
             }
         }
         return false;
     }
+
+    public Missile fire(Direction dir) {
+        if (!live) return null;
+        int x = this.x + Tank.WIDTH / 2 - Missile.WIDTH / 2;
+        int y = this.y + Tank.HEIGHT / 2 - Missile.WIDTH / 2;
+        Missile m = new Missile(x, y, good, dir, this.tankClient);
+        tankClient.missileList.add(m);
+        return m;
+    }
+
+    private void superFire() {
+        Direction[] dirs = Direction.values();
+        for (int i = 0; i < 8; i++) {
+            fire(dirs[i]);
+        }
+    }
+
     private void stay() {
         x = oldX;
         y = oldY;
