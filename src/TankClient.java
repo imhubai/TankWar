@@ -88,6 +88,7 @@ public class TankClient extends Frame {
         setVisible(true);
 
         new Thread(new PaintThread()).start();
+        tanks.add(myTank);
         for (int i = 0; i < 3; i++) {
             tanks.add(new Tank(50 + 40 * (i + 1), 50, false, Tank.Direction.STOP, this));
         }
