@@ -9,6 +9,7 @@ public class Tank {
     public static final int HEIGHT = 30;
     private static Random r = new Random();
     TankClient tankClient = null;
+    BloodBar bloodBar = new BloodBar();
     private int step = r.nextInt(12) + 3;
     private int oldX, oldY, x, y;
     private int Life = 100;
@@ -17,11 +18,13 @@ public class Tank {
     private Direction dir = Direction.STOP;
     private Direction ptDir = Direction.D;
     private boolean live = true;
+
     public Tank(int x, int y, TankClient tankClient) {
         this.x = x;
         this.y = y;
         this.tankClient = tankClient;
     }
+
     public Tank(int x, int y, boolean good, Direction dir, TankClient tankClient) {
         this.x = x;
         this.y = y;
@@ -73,8 +76,10 @@ public class Tank {
             return;
         }
         Color color = g.getColor();
-        if (good) g.setColor(Color.GREEN);
-        else g.setColor(new Color(255, 100, 50, 255));
+        if (good) {
+            g.setColor(Color.GREEN);
+            bloodBar.draw(g);
+        } else g.setColor(new Color(255, 100, 50, 255));
         g.fillRect(x, y, 30, 30);
         g.setColor(color);
 
@@ -235,4 +240,15 @@ public class Tank {
     }
 
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
+
+    private class BloodBar {
+        public void draw(Graphics g) {
+            Color c = g.getColor();
+            g.setColor(Color.RED);
+            g.drawRect(x, y - 10, WIDTH, 10);
+            int w = WIDTH * getLife() / 100;
+            g.fillRect(x, y - 10, w, 10);
+            g.setColor(c);
+        }
+    }
 }
