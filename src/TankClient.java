@@ -11,13 +11,11 @@ public class TankClient extends Frame {
     public static final int GAME_HEIGHT = 600;
     int x = 450, y = 350;
     Tank myTank = new Tank(x, y, true, Tank.Direction.STOP, this);
-    Wall wall=new Wall(50,500,400,10,this);
+    Wall wall = new Wall(50, 500, 400, 10, this);
     Blood b = new Blood();
     List<Missile> missileList = new ArrayList<>();
     List<Explode> explodeList = new ArrayList<>();
     List<Tank> tanks = new ArrayList<Tank>();
-    Missile m = null;
-
     Image offScreenImage = null;
 
     public static void main(String[] args) {
@@ -42,7 +40,12 @@ public class TankClient extends Frame {
         g.drawString("tanks count: " + tanks.size(), 10, 90);
         g.drawString("Missiles count:" + missileList.size(), 10, 50);
         g.drawString("explodes count: " + explodeList.size(), 10, 70);
-        g.drawString("HP: "+myTank.getLife(),10,80);
+        g.drawString("HP: " + myTank.getLife(), 10, 80);
+        if (tanks.size() <= 0) {
+            for (int i = 0; i < 5; i++) {
+                tanks.add(new Tank(50 + 40 * (i + 1), 50, false, Tank.Direction.D, this));
+            }
+        }
         for (int i = 0; i < missileList.size(); i++) {
             Missile m = missileList.get(i);
             m.hitTanks(tanks);
@@ -97,12 +100,7 @@ public class TankClient extends Frame {
         this.setResizable(false);
         this.addKeyListener(new KeyMonitor());
         setVisible(true);
-
         new Thread(new PaintThread()).start();
-        for (int i = 0; i < 10; i++) {
-            Tank enemy =new Tank(50 + 40 * (i + 1), 50, false, Tank.Direction.STOP, this);
-            tanks.add(enemy);
-        }
     }
 
     private class PaintThread implements Runnable {
