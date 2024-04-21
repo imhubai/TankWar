@@ -11,7 +11,8 @@ public class TankClient extends Frame {
     public static final int GAME_HEIGHT = 600;
     int x = 450, y = 350;
     Tank myTank = new Tank(x, y, true, Tank.Direction.STOP, this);
-    Wall wall=new Wall(50,300,400,10,this);
+    Wall wall=new Wall(50,500,400,10,this);
+    Blood b = new Blood();
     List<Missile> missileList = new ArrayList<>();
     List<Explode> explodeList = new ArrayList<>();
     List<Tank> tanks = new ArrayList<Tank>();
@@ -60,9 +61,11 @@ public class TankClient extends Frame {
             e.draw(g);
         }
         myTank.draw(g);
+        myTank.eat(b);
         myTank.collidesWithTanks(tanks);
         myTank.collidesWithWall(wall);
         wall.draw(g);
+        b.draw(g);
     }
 
     public void lunchFrame() {

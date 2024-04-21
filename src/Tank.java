@@ -238,7 +238,13 @@ public class Tank {
         x = oldX;
         y = oldY;
     }
-
+    public boolean eat(Blood b) {
+        if(this.live && b.isLive() &&
+                this.getRect().intersects(b.getRect())) { this.setLife(100); b.setLive(false);
+            return true;
+        }
+        return false;
+    }
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
 
     private class BloodBar {
