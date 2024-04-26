@@ -2,6 +2,11 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
+/**
+ * Tank类
+ *
+ * @author Hubai
+ */
 public class Tank {
     public static final int XSPEED = 5;
     public static final int YSPEED = 5;
@@ -12,7 +17,7 @@ public class Tank {
     BloodBar bloodBar = new BloodBar();
     private int step = r.nextInt(12) + 3;
     private int oldX, oldY, x, y;
-    private int Life = 100;
+    private int Life = 1000;
     private boolean good;
     private boolean bL = false, bU = false, bR = false, bD = false;
     private Direction dir = Direction.STOP;
@@ -150,8 +155,8 @@ public class Tank {
         int key = e.getKeyCode();
         switch (key) {
             case KeyEvent.VK_F2 -> {
-                if(!this.live) this.live = true;
-                this.setLife(100) ;
+                if (!this.live) this.live = true;
+                this.setLife(100);
             }
             case KeyEvent.VK_LEFT -> bL = true;
             case KeyEvent.VK_UP -> bU = true;
@@ -242,13 +247,17 @@ public class Tank {
         x = oldX;
         y = oldY;
     }
+
     public boolean eat(Blood b) {
-        if(this.live && b.isLive() &&
-                this.getRect().intersects(b.getRect())) { this.setLife(100); b.setLive(false);
+        if (this.live && b.isLive() &&
+                this.getRect().intersects(b.getRect())) {
+            this.setLife(100);
+            b.setLive(false);
             return true;
         }
         return false;
     }
+
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
 
     private class BloodBar {

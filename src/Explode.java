@@ -1,5 +1,10 @@
 import java.awt.*;
 
+/**
+ * Explode 爆炸
+ *
+ * @author Hubai
+ */
 public class Explode {
     int x, y;
     int[] diameter = {4, 7, 12, 18, 26, 32, 49, 30, 14, 6};

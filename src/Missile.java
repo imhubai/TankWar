@@ -1,6 +1,11 @@
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Missile 导弹
+ *
+ * @author Hubai
+ */
 public class Missile {
     public static final int XSPEED = 10;
     public static final int YSPEED = 10;

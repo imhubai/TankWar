@@ -1,7 +1,11 @@
 import java.awt.*;
 
+/**
+ * Wall 墙
+ *
+ * @author Hubai
+ */
 public class Wall {
-
     int x, y, w, h;
     TankClient tc;
 
@@ -21,5 +25,4 @@ public class Wall {
     public Rectangle getRect() {
         return new Rectangle(x, y, w, h);
     }
-
 }

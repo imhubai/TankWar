@@ -1,6 +1,10 @@
 import java.awt.*;
 
-
+/**
+ * Blood 回血道具
+ *
+ * @author Hubai
+ */
 public class Blood {
     int x, y, w, h;
     TankClient tc;

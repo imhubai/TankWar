@@ -6,6 +6,11 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TankClient 坦克大战主程序
+ *
+ * @author Hubai
+ */
 public class TankClient extends Frame {
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
@@ -42,7 +47,7 @@ public class TankClient extends Frame {
         g.drawString("explodes count: " + explodeList.size(), 10, 70);
         g.drawString("HP: " + myTank.getLife(), 10, 80);
         if (tanks.size() <= 0) {
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 50; i++) {
                 tanks.add(new Tank(50 + 40 * (i + 1), 50, false, Tank.Direction.D, this));
             }
         }
