@@ -17,7 +17,7 @@ public class Tank {
     BloodBar bloodBar = new BloodBar();
     private int step = r.nextInt(12) + 3;
     private int oldX, oldY, x, y;
-    private int Life = 1000;
+    private int Life = 100;
     private boolean good;
     private boolean bL = false, bU = false, bR = false, bD = false;
     private Direction dir = Direction.STOP;
